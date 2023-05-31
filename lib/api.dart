@@ -7,7 +7,7 @@ import 'package:async/async.dart';
 import 'dart:io';
 
 class Network{
-  final String _url = 'http://192.168.1.2:8000/api';
+  final String lnk = 'http://192.168.1.2:8000';
   // 192.168.1.8:8000 is my IP, change with your IP address
   var token;
 
@@ -18,7 +18,7 @@ class Network{
 
   post(data, apiURL) async{
     print("POST");
-    var fullUrl = _url + apiURL;
+    var fullUrl = lnk+'/api' + apiURL;
     return await http.post(
         Uri.parse(fullUrl),
         body: jsonEncode(data),
@@ -30,7 +30,7 @@ class Network{
     Map<String, String> headers = {
       'Content-Type': 'multipart/form-data',
     };
-    var fullUrl = _url + apiURL;
+    var fullUrl = lnk+'/api' + apiURL;
     var req = http.MultipartRequest('POST', Uri.parse(fullUrl))
       ..fields.addAll(data)
       ..headers.addAll(headers)
@@ -41,7 +41,7 @@ class Network{
 
   editData(data, apiURL) async{
     print("AUTH");
-    var fullUrl = _url + apiURL;
+    var fullUrl = lnk+'/api' + apiURL;
     return await http.put(
         Uri.parse(fullUrl),
         body: jsonEncode(data),
@@ -50,7 +50,7 @@ class Network{
   }
 
   deleteData(apiURL) async{
-    var fullUrl = _url + apiURL;
+    var fullUrl = lnk+'/api' + apiURL;
     await _getToken();
     return await http.delete(
       Uri.parse(fullUrl),
@@ -59,7 +59,7 @@ class Network{
   }
 
   getData(apiURL) async{
-    var fullUrl = _url + apiURL;
+    var fullUrl = lnk+'/api' + apiURL;
     await _getToken();
     print("GET DATA");
     var data = await http.get(

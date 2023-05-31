@@ -1,5 +1,7 @@
 import 'package:booking_lapang_mobile/JadwalkuWidget.dart';
 import 'package:booking_lapang_mobile/LapangWidget.dart';
+import 'package:booking_lapang_mobile/LoginPage.dart';
+import 'package:booking_lapang_mobile/ProfileWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -16,10 +18,11 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin{
 
   final scaffoldKey = GlobalKey<ScaffoldState>();
   final _unfocusNode = FocusNode();
+  late TabController _tabController;
 
   String name="Nama";
   int user_id=-1;
@@ -28,6 +31,12 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _loadUserData();
+    _tabController = new TabController(vsync: this, length: 2);
+    _tabController.addListener(() {
+      setState(() {
+        _selectedIndex = _tabController.index;
+      });
+    });
   }
   _loadUserData() async{
     SharedPreferences localStorage = await SharedPreferences.getInstance();
@@ -39,7 +48,27 @@ class _HomePageState extends State<HomePage> {
         user_id = user['id'];
         User = user;
       });
+    }else{
+      Navigator.pushReplacement(
+        context,
+        new MaterialPageRoute(
+            builder: (context) => LoginPage()
+        ),
+      );
     }
+  }
+
+  int _selectedIndex = 0;
+  void _onItemTapped(int index) {
+    if(index==0){
+      _tabController.animateTo(0);
+    }
+    if(index==1){
+      _tabController.animateTo(1);
+    }
+    setState(() {
+      _selectedIndex = index;
+    });
   }
 
   @override
@@ -77,7 +106,9 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
               Expanded(
-                child: DefaultTabController(
+                child:
+                _selectedIndex < 2 ?
+                DefaultTabController(
                   length: 2,
                   initialIndex: 0,
                   child: Column(
@@ -92,6 +123,7 @@ class _HomePageState extends State<HomePage> {
                             fontSize: 18,
                           ),
                           indicatorColor: Colors.black87,
+                          controller: _tabController,
                           tabs: [
                             Tab(
                               text: 'List Lapangan',
@@ -104,6 +136,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       Expanded(
                         child: TabBarView(
+                          controller: _tabController,
                           children: [
                             LapangPageWidget(user: User),
                             JadwalkuWidget(user_id: user_id),
@@ -112,11 +145,32 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ],
                   ),
-                ),
+                )
+                : ProfileWidget(user: User),
               ),
             ],
           ),
         ),
+          bottomNavigationBar: BottomNavigationBar(
+            backgroundColor: Color(0xFF6F1DD8),
+            items: const <BottomNavigationBarItem>[
+              BottomNavigationBarItem(
+                icon: Icon(Icons.home),
+                label: 'Lapangan',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.calendar_month),
+                label: 'Jadwalku',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.account_circle),
+                label: 'Profile',
+              ),
+            ],
+            currentIndex: _selectedIndex,
+            selectedItemColor: Colors.amber[800],
+            onTap: _onItemTapped,
+          )
       ),
     );
   }

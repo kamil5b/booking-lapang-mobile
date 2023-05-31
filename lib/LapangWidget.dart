@@ -46,7 +46,6 @@ class _LapangPageWidgetState extends State<LapangPageWidget> {
                                 0, 5, 0, 5),
                             child: InkWell(
                               onTap: () async {
-
                                 await Navigator.push(
                                   context,
                                   MaterialPageRoute(
@@ -69,7 +68,7 @@ class _LapangPageWidgetState extends State<LapangPageWidget> {
                                     width: 320,
                                     height: 85,
                                     decoration: BoxDecoration(
-                                      color: Colors.grey,
+                                      color: Colors.white70,
                                       borderRadius:
                                       BorderRadius.circular(15),
                                       shape: BoxShape.rectangle,
@@ -89,7 +88,7 @@ class _LapangPageWidgetState extends State<LapangPageWidget> {
                                               BorderRadius.circular(
                                                   8),
                                               child: Image.network(
-                                                'https://picsum.photos/seed/493/600',
+                                                snapshot.data[index].pic,
                                                 width: 60,
                                                 height: 60,
                                                 fit: BoxFit.cover,

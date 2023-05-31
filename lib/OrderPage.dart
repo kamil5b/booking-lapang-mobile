@@ -123,7 +123,33 @@ class _OrderPageState extends State<OrderPage> {
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
     return Scaffold(
+      //resizeToAvoidBottomInset: false,
         backgroundColor: Color(0xFFECFF17),
+        appBar: AppBar(
+            backgroundColor: Color(0xFFECFF17),
+            automaticallyImplyLeading: false,
+            leading: IconButton(
+              color: Colors.black87,
+              icon: Icon(
+                Icons.arrow_back_rounded,
+                size: 30,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+            centerTitle: true,
+            elevation: 0,
+            title: Text(
+              'Booking ${widget.lapangan.name}',
+              style: TextStyle(
+                fontFamily: 'Readex Pro',
+                color: Color(0xFF06981D),
+                fontSize: 24,
+                fontWeight: FontWeight.w800,
+              ),
+            )
+        ),
         body: SingleChildScrollView(
           child: SafeArea(
           top: true,
@@ -131,22 +157,6 @@ class _OrderPageState extends State<OrderPage> {
             mainAxisSize: MainAxisSize.max,
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Row(
-                mainAxisSize: MainAxisSize.max,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Booking ${widget.lapangan.name}',
-                    style: TextStyle(
-                      fontFamily: 'Readex Pro',
-                      color: Color(0xFF06981D),
-                      fontSize: 24,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                ],
-              ),
-
               Padding(
                 padding: EdgeInsetsDirectional.fromSTEB(16, 0, 16, 16),
                 child: Form(
